@@ -12,6 +12,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.white,
       ),
+      routes: <String, WidgetBuilder>{
+        '/a': (BuildContext context) => AScreen(),
+        '/b': (BuildContext context) => BScreen()
+      },
     );
   }
 }
@@ -58,6 +62,27 @@ class _RandomWordsState extends State<RandomWords> {
         actions: [IconButton(icon: Icon(Icons.list), onPressed: _pushSaved)],
       ),
       body: _buildSuggestions(),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              child: Text('test header'),
+              decoration: BoxDecoration(color: Colors.blue),
+            ),
+            ListTile(
+              leading: Icon(Icons.zoom_out_sharp),
+              title: Text('a'),
+              onTap: () => Navigator.of(context).pushNamed('/a'),
+            ),
+            ListTile(
+              leading: Icon(Icons.zoom_out_sharp),
+              title: Text('b'),
+              onTap: () => Navigator.of(context).pushNamed('/b'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -99,5 +124,50 @@ class _RandomWordsState extends State<RandomWords> {
     //       ),
     //       child: Text('aaaaa'))
     // ]);
+  }
+}
+
+class AScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('a route'),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.add_link),
+              onPressed: () => showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                      title: Text('title'), content: Text('content'))))
+        ],
+      ),
+      body: Text(
+        'a route',
+        style: TextStyle(color: Colors.blue),
+      ),
+    );
+  }
+}
+
+class BScreen extends StatefulWidget {
+  @override
+  _BScreenState createState() => _BScreenState();
+}
+
+class _BScreenState extends State<BScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('b route'),
+        actions: [
+          IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: () => Navigator.of(context).pop())
+        ],
+      ),
+      body: Text('b route'),
+    );
   }
 }
